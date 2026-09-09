@@ -52,19 +52,19 @@ const pvSales = {
     "BYD India": [313, 254, 396, 346, 494, 476, 459, 450, 547, 1005, 425, 237] // corrected: prior placeholders understated most months by 20-60%; CY2025 total reconciled to confirmed 5,402 (Oct derived as exact remainder)
   },
   2026: {
-    "Maruti Suzuki": [216043, 213995, 172919, 187704, 242688, 200390, null, null, null, null, null, null], // Jun: total sales (dom 150,150 + OEM 7,472 + exports 42,768) per Maruti press release
-    "Hyundai": [65914, 66134, 48623, 51902, 47837, 51335, null, null, null, null, null, null], // Jun: total 51,335 (dom 39,635 + exp 11,700); supplier-fire production loss ~13,900
-    "Tata Motors": [63558, 63331, 66971, 59000, 59090, 63083, null, null, null, null, null, null], // March corrected: 67268 unsupported by any source; 66971 confirmed (domestic 66192 + exports 779). Jun: total PV 63,083 (+69% YoY)
-    "Mahindra": [63366, 60018, 61032, 56331, 58021, 61504, null, null, null, null, null, null], // Jun: UV incl exports 61,504 (domestic 60,393)
-    "Toyota": [35053, 34034, 27479, 30159, 33128, 31016, null, null, null, null, null, null], // Jun: total 31,016 (dom 28,441 + exp 2,575)
-    "Kia": [29954, 27610, 27987, 27286, 27586, 24552, null, null, null, null, null, null], // Jun: 24,552 wholesale (highest-ever June)
-    "Skoda-Volkswagen": [9794, 9000, 8676, 9714, 8379, null, null, null, null, null, null, null], // Feb restored: RushLane wholesale (Skoda 6,361 + VW 2,639 = 9,000). Jun left pending: no standalone June monthly figure published (only H1 cumulative)
-    "MG Motor": [5926, 4957, 6233, 6018, 6048, 7568, null, null, null, null, null, null], // Feb restored: RushLane wholesale report states MG Motor 4,957 directly. Jun: 7,568 wholesale (+30% YoY)
-    "Honda": [5848, 7212, 5507, 4069, 5111, 5243, null, null, null, null, null, null], // Jun: domestic 5,243 (total incl exports 8,788)
-    "Renault": [4839, 3495, 3588, 5413, 4113, 4063, null, null, null, null, null, null], // Jun: 4,063 (+54.78% YoY)
-    "Nissan": [null, 2230, 2538, 3203, 2948, 3006, null, null, null, null, null, null], // Feb restored: RushLane wholesale report states Nissan India 2,230 directly. Jun: 3,006 (+42.67% YoY)
-    "BMW": [null, null, 1559, null, null, null, null, null, null, null, null, null], // Jan/Feb left pending: 3 conflicting VAHAN-data citations found (1,962 / 1,873 / 2,040 for Jan) with no way to confirm which is canonical
-    "BYD India": [231, 306, 414, 469, 686, 860, null, null, null, null, null, null] // corrected: prior figures (850-1020) had no supporting source; VAHAN retail data confirms these much lower values (BYD is 100% EV, so PV-all = EV-all). Jun: 860 (VAHAN, new monthly high)
+    "Maruti Suzuki": [216043, 213995, 172919, 187704, 242688, 200390, 196203, 176971, null, null, null, null], // Jun: total sales (dom 150,150 + OEM 7,472 + exports 42,768) per Maruti press release. Jul: wholesale dispatch 196,203 (+42.4% YoY, all-time-high domestic base); Aug: 176,971 (+34.8% YoY), 9.8% lower MoM than Jul
+    "Hyundai": [65914, 66134, 48623, 51902, 47837, 51335, 54210, 54396, null, null, null, null], // Jun: total 51,335 (dom 39,635 + exp 11,700); supplier-fire production loss ~13,900. Jul: 54,210 (+23.3% YoY); Aug: 54,396 (+23.6% YoY), highest-ever Hyundai August
+    "Tata Motors": [63558, 63331, 66971, 59000, 59090, 63083, 62611, 65253, null, null, null, null], // March corrected: 67268 unsupported by any source; 66971 confirmed (domestic 66192 + exports 779). Jun: total PV 63,083 (+69% YoY). Jul: 62,611 (+58.4% YoY); Aug: 65,253 (+59.1% YoY), widened lead over Mahindra
+    "Mahindra": [63366, 60018, 61032, 56331, 58021, 61504, 60048, 59257, null, null, null, null], // Jun: UV incl exports 61,504 (domestic 60,393). Jul: 60,048 (+20.4% YoY); Aug: 59,257 (+50.4% YoY)
+    "Toyota": [35053, 34034, 27479, 30159, 33128, 31016, 30516, 28410, null, null, null, null], // Jun: total 31,016 (dom 28,441 + exp 2,575). Jul: 30,516 (+4.7% YoY); Aug: 28,410 (-3.0% YoY)
+    "Kia": [29954, 27610, 27987, 27286, 27586, 24552, 28200, 29042, null, null, null, null], // Jun: 24,552 wholesale (highest-ever June). Jul: 28,200 (+27.4% YoY); Aug: 29,042 (+48.1% YoY)
+    "Skoda-Volkswagen": [9794, 9000, 8676, 9714, 8379, null, 8425, 7933, null, null, null, null], // Feb restored: RushLane wholesale (Skoda 6,361 + VW 2,639 = 9,000). Jun left pending: no standalone June monthly figure published (only H1 cumulative). Jul: Skoda 5,710 + VW 2,715 = 8,425; Aug: Skoda 5,650 + VW 2,283 = 7,933 (AutoPunditz brand table)
+    "MG Motor": [5926, 4957, 6233, 6018, 6048, 7568, 8158, 7508, null, null, null, null], // Feb restored: RushLane wholesale report states MG Motor 4,957 directly. Jun: 7,568 wholesale (+30% YoY). Jul: 8,158 (+22.2% YoY); Aug: 7,508 (+14.1% YoY)
+    "Honda": [5848, 7212, 5507, 4069, 5111, 5243, 6014, 5385, null, null, null, null], // Jun: domestic 5,243 (total incl exports 8,788). Jul: 6,014 (+48.5% YoY); Aug: 5,385 (+39.9% YoY)
+    "Renault": [4839, 3495, 3588, 5413, 4113, 4063, 3293, 2842, null, null, null, null], // Jun: 4,063 (+54.78% YoY). Jul: 3,293 (+27.9% YoY); Aug: 2,842 (-5.7% YoY)
+    "Nissan": [null, 2230, 2538, 3203, 2948, 3006, 4518, 3426, null, null, null, null], // Feb restored: RushLane wholesale report states Nissan India 2,230 directly. Jun: 3,006 (+42.67% YoY). Jul: 4,518 (+218.2% YoY, Magnite export ramp-up); Aug: 3,426 (+147.5% YoY)
+    "BMW": [null, null, 1559, null, null, null, 1702, null, null, null, null, null], // Jan/Feb left pending: 3 conflicting VAHAN-data citations found (1,962 / 1,873 / 2,040 for Jan) with no way to confirm which is canonical. Jul: 1,702 retail registrations (segment-leading premium brand); Aug left pending: only H1/cumulative BMW Group figures found, no standalone August brand figure
+    "BYD India": [231, 306, 414, 469, 686, 860, 749, 543, null, null, null, null] // corrected: prior figures (850-1020) had no supporting source; VAHAN retail data confirms these much lower values (BYD is 100% EV, so PV-all = EV-all). Jun: 860 (VAHAN, new monthly high). Jul: 749 (+22.2% YoY, -19.1% MoM off Jun high); Aug: 543 (-6.5% YoY, -27.5% MoM)
   }
 };
 
@@ -103,7 +103,9 @@ const pvSourceNotes = {
     March: "NBT March 2026 brand ranking",
     April: "NBT April 2026 brand ranking",
     May: "TOI and AutoPunditz May 2026 reports",
-    June: "Official OEM June 2026 sales press releases (Maruti/Hyundai/Toyota/Kia/Tata/Mahindra); RushLane top-6 & Autocar June 2026"
+    June: "Official OEM June 2026 sales press releases (Maruti/Hyundai/Toyota/Kia/Tata/Mahindra); RushLane top-6 & Autocar June 2026",
+    July: "AutoPunditz Jul 2026 OEM brand table (Maruti/Tata/Mahindra/Hyundai/Toyota/Kia/MG/Honda/Skoda/Nissan/Renault/VW); BMW retail via AutoPunditz BMW-Mercedes report; BYD via AutoPunditz EV report",
+    August: "AutoPunditz Aug 2026 OEM brand table (India Car Sales Snapshot); BYD via AutoPunditz EV registrations report"
   }
 };
 
@@ -135,12 +137,12 @@ const pvICESales = {
     "Kia ICE": [22169, 18794, 21997, 21618, 16810, 18005, 19494, 18212, 16727, 32961, 23805, 20568] // = Total (Kia has no separate EV line)
   },
   2026: {
-    "Maruti Suzuki ICE": [215828, 213781, 171970, 186474, 241097, 198494, null, null, null, null, null, null],
-    "Hyundai ICE":      [65581,  65830,  48147,  51386,  47377,  50988,  null, null, null, null, null, null],
-    "Tata Motors ICE":  [55551,  57773,  58718,  50457,  48751,  51060,  null, null, null, null, null, null],
-    "Mahindra ICE":     [59698,  57105,  55788,  50918,  51811,  53859,  null, null, null, null, null, null],
-    "Toyota ICE":       [35053,  34034,  27479,  30159,  33128,  31016,  null, null, null, null, null, null],
-    "Kia ICE":          [29954,  27610,  27987,  27286,  27586,  24552,  null, null, null, null, null, null]
+    "Maruti Suzuki ICE": [215828, 213781, 171970, 186474, 241097, 198494, 194613, 175566, null, null, null, null], // Jul/Aug: All minus e-Vitara EV (1,590 / 1,405)
+    "Hyundai ICE":      [65581,  65830,  48147,  51386,  47377,  50988,  53644, 53876, null, null, null, null], // Jul: All minus EV (566). Aug: EV not separately published — estimated ~520 units from Jul level and industry-wide ~7% MoM EV softness; ICE = All minus that estimate (flagged, not a sourced figure)
+    "Tata Motors ICE":  [55551,  57773,  58718,  50457,  48751,  51060,  48933, 52094, null, null, null, null], // Jul: All minus EV (13,678). Aug: All minus EV (13,159, = 42.87% of Aug's 30,696 total EV-car registrations per VAHAN)
+    "Mahindra ICE":     [59698,  57105,  55788,  50918,  51811,  53859,  52306, 52793, null, null, null, null], // Jul: All minus EV (7,742). Aug: All minus EV (6,464)
+    "Toyota ICE":       [35053,  34034,  27479,  30159,  33128,  31016,  30516, 28410, null, null, null, null], // Jul/Aug: = All (Toyota has no separate EV line)
+    "Kia ICE":          [29954,  27610,  27987,  27286,  27586,  24552,  28200, 29042, null, null, null, null] // Jul/Aug: = All (Kia had no separate EV line until Syros EV launched in Aug; Kia EV not yet tracked as its own row)
   }
 };
 
@@ -179,7 +181,9 @@ const pvICESourceNotes = {
     March: "Estimated ICE dispatch (Total minus VAHAN EV)",
     April: "Estimated ICE dispatch (Total minus VAHAN EV)",
     May: "Estimated ICE dispatch (Total minus VAHAN EV)",
-    June: "Derived: OEM total sales minus VAHAN EV registrations - Jun 2026"
+    June: "Derived: OEM total sales minus VAHAN EV registrations - Jun 2026",
+    July: "Derived: OEM total sales minus VAHAN EV registrations - Jul 2026",
+    August: "Derived: OEM total sales minus VAHAN EV registrations - Aug 2026 (Hyundai EV component estimated, see pvEVSales note)"
   }
 };
 
@@ -211,12 +215,12 @@ const pvEVSales = {
     "Hyundai EV": [321, 738, 849, 677, 606, 512, 580, 650, 550, 444, 537, 262] // corrected; Jul/Aug/Sep/Nov derived as remainder against confirmed CY2025 total of 6,726
   },
   2026: {
-    "Tata EVs":        [8007, 5558, 8253, 8543, 10339, 12023, null, null, null, null, null, null], // corrected to VAHAN retail data (e-vehicleinfo/carbike360/RushLane EV roundups) — prior figures were unsupported estimates. Jun: 12,023 VAHAN (Tata wholesale 14,800), new high
-    "MG Motor EV":     [4703, 3310, 5141, 5006, 4985, 5785, null, null, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 5,785 VAHAN (+23% YoY)
-    "Mahindra EV":     [3668, 2913, 5244, 5413, 6210, 7645, null, null, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 7,645 VAHAN, first time above 7,000
-    "BYD India":       [231, 306, 414, 469, 686, 860, null, null, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 860 VAHAN
-    "Maruti Suzuki EV": [215, 214, 949, 1230, 1591, 1896, null, null, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 1,896 e-Vitara (highest since Jan launch)
-    "Hyundai EV":      [333, 304, 476, 516, 460, 347, null, null, null, null, null, null] // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 347 VAHAN (-42% YoY)
+    "Tata EVs":        [8007, 5558, 8253, 8543, 10339, 12023, 13678, 13159, null, null, null, null], // corrected to VAHAN retail data (e-vehicleinfo/carbike360/RushLane EV roundups) — prior figures were unsupported estimates. Jun: 12,023 VAHAN (Tata wholesale 14,800), new high. Jul: 13,678 (+103.2% YoY, #1 EV brand at 42.5% share); Aug: 13,159 (= 42.87% of 30,696 total EV-car registrations)
+    "MG Motor EV":     [4703, 3310, 5141, 5006, 4985, 5785, 5689, 4622, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 5,785 VAHAN (+23% YoY). Jul: 5,689 (-3.6% YoY); Aug: 4,622 (-17.8% YoY)
+    "Mahindra EV":     [3668, 2913, 5244, 5413, 6210, 7645, 7742, 6464, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 7,645 VAHAN, first time above 7,000. Jul: 7,742 (+126.6% YoY); Aug: 6,464 (+56.2% YoY)
+    "BYD India":       [231, 306, 414, 469, 686, 860, 749, 543, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 860 VAHAN. Jul: 749 (+22.2% YoY); Aug: 543 (-6.5% YoY)
+    "Maruti Suzuki EV": [215, 214, 949, 1230, 1591, 1896, 1590, 1405, null, null, null, null], // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 1,896 e-Vitara (highest since Jan launch). Jul: 1,590 e-Vitara (5th straight 4-digit month); Aug: 1,405 (-16% MoM)
+    "Hyundai EV":      [333, 304, 476, 516, 460, 347, 566, 520, null, null, null, null] // corrected to VAHAN retail data — prior figures were unsupported estimates. Jun: 347 VAHAN (-42% YoY). Jul: 566 (-21.3% YoY, +51.3% MoM). Aug: no standalone Creta EV/Ioniq figure published separately from combined Creta total — estimated ~520 from Jul level and industry EV softness in Aug (flagged, not directly sourced); Hyundai ICE Aug derived from this estimate
   }
 };
 
@@ -255,7 +259,9 @@ const pvEVSourceNotes = {
     March: "VAHAN Passenger EV retail channels (e-vehicleinfo)",
     April: "VAHAN Passenger EV retail channels (carbike360 / RushLane)",
     May: "VAHAN Passenger EV retail channels (RushLane / searchev)",
-    June: "VAHAN Passenger EV registrations (Autocar Pro / AutoPunditz Jun 2026)"
+    June: "VAHAN Passenger EV registrations (Autocar Pro / AutoPunditz Jun 2026)",
+    July: "VAHAN Passenger EV registrations (AutoPunditz Jul 2026 EV report; Autocar India EV report)",
+    August: "VAHAN Passenger EV registrations (AutoPunditz Aug 2026 EV registrations report); Hyundai EV estimated, not directly sourced"
   }
 };
 
@@ -290,13 +296,13 @@ const cvSales = {
     "Force Motors": [2000, 1762, 2692, 3646, 2350, 2036, 1950, 2329, 1492, 1823, 2208, 1613] // corrected; Jan/May/Aug derived as remainder vs confirmed CY2025 total 25,901 (exact match); prior Jan figure of 21,621 was a source-extraction error
   },
   2026: {
-    "Tata Motors CV":      [36571, 35900, 36380, 36891, 30784, 36599, null, null, null, null, null, null], // Jun: domestic CV dispatch 36,599 (+31% YoY; total incl exports 40,805)
-    "Mahindra CV":         [31884, 27014, 26898, 24308, 24079, 26076, null, null, null, null, null, null], // Jun: domestic CV 26,076 (+35% YoY)
-    "Ashok Leyland":       [19205, 18619, 19384, 14646, 14923, 19194, null, null, null, null, null, null], // Jun: total 19,194 (+25% YoY)
-    "Eicher Motors (VECV)":[10601,  9986, 13311,  7318,  7978,  9519, null, null, null, null, null, null], // Jun: total 9,519 (+29.3% YoY)
-    "Maruti Suzuki CV":    [ 5456,  4489,  4561,   null,   null,  null, null, null, null, null, null, null], // Apr/May Super Carry-only figures don't match this row's Jan-Mar basis — left pending; Jun likewise pending
-    "Daimler India":       [ 2444,   null,  2130,  2283,   null,  null, null, null, null, null, null, null], // Jun: no standalone June figure published
-    "Force Motors":        [  null,   null,  2142,  2113,   null,  null, null, null, null, null, null, null] // Jun: no standalone June sales figure published
+    "Tata Motors CV":      [36571, 35900, 36380, 36891, 30784, 36599, 34733, 36619, null, null, null, null], // Jun: domestic CV dispatch 36,599 (+31% YoY; total incl exports 40,805). Jul: FADA retail 34,733 (+32.8% YoY, 34.85% market share); Aug: domestic dispatch 36,619 (+33% YoY; total incl exports 44,411, +49% YoY) — methodology switches retail→dispatch between Jul/Aug per source availability
+    "Mahindra CV":         [31884, 27014, 26898, 24308, 24079, 26076, 26055, 29910, null, null, null, null], // Jun: domestic CV 26,076 (+35% YoY). Jul: FADA retail 26,055 (+22.4% YoY); Aug: domestic dispatch 29,910 (sub-3.5T CV 27,415 +22% YoY, plus Trucks & Buses/SML 2,495 +47% YoY)
+    "Ashok Leyland":       [19205, 18619, 19384, 14646, 14923, 19194, 17691, 19438, null, null, null, null], // Jun: total 19,194 (+25% YoY). Jul: FADA retail 17,691 (+16.2% YoY); Aug: domestic dispatch 19,438 (+43% YoY; total incl exports 21,038, +38% YoY)
+    "Eicher Motors (VECV)":[10601,  9986, 13311,  7318,  7978,  9519, 8724, 7584, null, null, null, null], // Jun: total 9,519 (+29.3% YoY). Jul: FADA retail 8,724 (+15.2% YoY); Aug: domestic dispatch 7,584 (+19.8% YoY; total incl exports 8,434, +17.7% YoY)
+    "Maruti Suzuki CV":    [ 5456,  4489,  4561,   null,   null,  null, 4460, 3107, null, null, null, null], // Apr/May Super Carry-only figures don't match this row's Jan-Mar basis — left pending; Jun likewise pending. Jul: FADA retail 4,460 (+22.7% YoY); Aug: Super Carry dispatch 3,107 (+12.1% YoY)
+    "Daimler India":       [ 2444,   null,  2130,  2283,   null,  null, 1667, null, null, null, null, null], // Jun: no standalone June figure published. Jul: FADA retail 1,667 (+14.2% YoY); Aug: no standalone figure published
+    "Force Motors":        [  null,   null,  2142,  2113,   null,  null, 2610, 3721, null, null, null, null] // Jun: no standalone June sales figure published. Jul: FADA retail 2,610 (+18.6% YoY; total incl non-CV 3,770); Aug: domestic dispatch 3,721 (+62.1% YoY; total incl exports 3,802, +58.2% YoY)
   }
 };
 
@@ -335,7 +341,9 @@ const cvSourceNotes = {
     March:    "FADA Mar 2026 CV retail report (RushLane / trucks.cardekho)",
     April:    "FADA Apr 2026 CV retail report + OEM filings",
     May:      "OEM exchange filings / AutoPunditz May 2026 CV data",
-    June:     "Official OEM June 2026 sales releases (Tata/Mahindra/Ashok Leyland/VECV); smaller players pending"
+    June:     "Official OEM June 2026 sales releases (Tata/Mahindra/Ashok Leyland/VECV); smaller players pending",
+    July:     "FADA CV retail report (TractorJunction / Business Standard Jul 2026)",
+    August:   "OEM exchange filings / monthly business updates (Tata/Mahindra/Ashok Leyland/VECV/Maruti/Force); Daimler pending — methodology switches from Jul's FADA retail basis to Aug's OEM dispatch basis, see cvSales notes"
   }
 };
 
@@ -379,16 +387,16 @@ const tw2wAllSales = {
     "Greaves / Ampere": [4800, 4200, 5200, 4500, 4178, 4300, 4600, 4498, 4700, 6500, 5200, 3810]
   },
   2026: {
-    "Hero MotoCorp": [520208, 516968, 552148, 532433, 536784, 502890, null, null, null, null, null, null], // Jun: domestic 502,890 (incl Vida)
-    "Honda 2W":      [519579, 513190, 512000, 484000, 459611, 468956, null, null, null, null, null, null], // Jun: domestic 468,956
-    "TVS Motor":     [383262, 365471, 372383, 348545, 384565, 411014, null, null, null, null, null, null], // Jun: domestic 411,014 (incl iQube; +47% total, global 565,417)
-    "Bajaj Auto":    [214727, 186164, 221684, 210063, 209528, 166956, null, null, null, null, null, null], // Jun: domestic 166,956 (+12% YoY)
-    "Suzuki Moto":   [100296, 101071, 108017,  98054, 110028,  91264, null, null, null, null, null, null], // Jun: domestic 91,264 (+23% YoY)
-    "Royal Enfield": [ 93781,  91248,  97940, 104129,  94115, 102930, null, null, null, null, null, null], // Jun: 102,930 (+33.75% YoY)
-    "Yamaha India":  [ 79000,  67072,  65705,  null,    null, 67621, null, null, null, null, null, null], // Jun: 67,621 (VAHAN retail)
-    "Ather Energy":  [20786, 19738, 35688, 27024, 28211, 31188, null, null, null, null, null, null], // Jun: 31,188 VAHAN (+95% YoY)
-    "Ola Electric":  [ 7221,  3968, 10118, 12171, 15141, 16144, null, null, null, null, null, null], // Jun: 16,144 VAHAN
-    "Greaves / Ampere": [ 4500,  4478,  7965,  6884,  7703, 10928, null, null, null, null, null, null] // Jun: 10,928 VAHAN (+152% YoY)
+    "Hero MotoCorp": [520208, 516968, 552148, 532433, 536784, 502890, 501403, 413996, null, null, null, null], // Jun: domestic 502,890 (incl Vida). Jul: domestic dispatch 501,403 (+21.6% YoY, incl Vida); Aug: VAHAN retail 413,996 (+18.6% YoY) — Jul figure is dispatch, Aug is retail (no standalone Aug dispatch-only figure found), so the Jul→Aug change mixes methodologies
+    "Honda 2W":      [519579, 513190, 512000, 484000, 459611, 468956, 476436, 447342, null, null, null, null], // Jun: domestic 468,956. Jul: domestic dispatch 476,436 (+2.2% YoY); Aug: VAHAN retail 447,342 (+20.0% YoY, market leader) — Aug domestic dispatch was 517,329 but retail used here to match the rest of this month's row
+    "TVS Motor":     [383262, 365471, 372383, 348545, 384565, 411014, 437394, 353746, null, null, null, null], // Jun: domestic 411,014 (incl iQube; +47% total, global 565,417). Jul: domestic dispatch 437,394 (+41.7% YoY, incl iQube+Orbiter); Aug: VAHAN retail 353,746 (+25.3% YoY) — Aug domestic dispatch was 433,796 but retail used here for row consistency
+    "Bajaj Auto":    [214727, 186164, 221684, 210063, 209528, 166956, 165747, 157149, null, null, null, null], // Jun: domestic 166,956 (+12% YoY). Jul: domestic dispatch 165,747 (+19.0% YoY, incl Chetak); Aug: VAHAN retail 157,149 (+15.3% YoY) — Aug domestic dispatch was 201,898 but retail used here for row consistency
+    "Suzuki Moto":   [100296, 101071, 108017,  98054, 110028,  91264, 123216, 104217, null, null, null, null], // Jun: domestic 91,264 (+23% YoY). Jul: domestic dispatch 123,216 (+28.3% YoY); Aug: VAHAN retail 104,217 (+8.4% YoY)
+    "Royal Enfield": [ 93781,  91248,  97940, 104129,  94115, 102930, 105317, 94448, null, null, null, null], // Jun: 102,930 (+33.75% YoY). Jul: 105,317 (+38.1% YoY); Aug: VAHAN retail 94,448 (+23.5% YoY)
+    "Yamaha India":  [ 79000,  67072,  65705,  null,    null, 67621, 72579, 62375, null, null, null, null], // Jun: 67,621 (VAHAN retail). Jul: 72,579 (+44.1% YoY); Aug: 62,375 (+13.1% YoY)
+    "Ather Energy":  [20786, 19738, 35688, 27024, 28211, 31188, 31044, 28757, null, null, null, null], // Jun: 31,188 VAHAN (+95% YoY). Jul: 31,044 domestic dispatch; Aug: 28,757 VAHAN retail (+49.7% YoY) — pure-EV brand, so this equals its EV-row figure each month
+    "Ola Electric":  [ 7221,  3968, 10118, 12171, 15141, 16144, 14105, 13852, null, null, null, null], // Jun: 16,144 VAHAN. Jul: 14,105 VAHAN (-24% YoY); Aug: 13,852 VAHAN (-28.8% YoY) — pure-EV brand, equals its EV-row figure each month
+    "Greaves / Ampere": [ 4500,  4478,  7965,  6884,  7703, 10928, 10125, 8613, null, null, null, null] // Jun: 10,928 VAHAN (+152% YoY). Jul: 10,125 VAHAN (+137% YoY); Aug: 8,613 VAHAN (+88.6% YoY) — pure-EV brand, equals its EV-row figure each month
   }
 };
 
@@ -427,7 +435,9 @@ const tw2wAllSourceNotes = {
     March:    "RushLane / OEM filings March 2026",
     April:    "RushLane Apr 2026 2W sales report",
     May:      "RushLane May 2026 2W sales report",
-    June:     "Official OEM June 2026 domestic dispatch releases; RushLane / Autocar June 2026 2W (Yamaha VAHAN)"
+    June:     "Official OEM June 2026 domestic dispatch releases; RushLane / Autocar June 2026 2W (Yamaha VAHAN)",
+    July:     "BikeAdvice Jul 2026 domestic dispatch report (Hero/Honda/TVS/Bajaj/Suzuki/RE/Yamaha/Ather); Ola/Greaves via VAHAN retail (Entrackr/AllVoltAuto Jul 2026)",
+    August:   "AutoPunditz Aug 2026 VAHAN retail report (all 10 brands); domestic dispatch figures for Hero/Honda/TVS/Bajaj were available from separate Autocar India/Autocar Pro Aug 2026 reports but VAHAN retail used instead for row consistency, see tw2wAllSales notes"
   }
 };
 
@@ -462,13 +472,13 @@ const tw2wICESales = {
     "Yamaha India ICE": [53000, 48000, 50473, 49500, 50388, 49000, 50365, 51500, 49000, 70000, 60000, 55000]
   },
   2026: {
-    "Hero MotoCorp ICE": [507600, 505008, 530714, 517195, 517717, 481098, null, null, null, null, null, null], // Jun: 502,890 − Vida 21,792
-    "Honda 2W ICE":      [519202, 512813, 511623, 483623, 459234, 468956, null, null, null, null, null, null], // Jun: = domestic (Honda EV negligible/untracked)
-    "TVS Motor ICE":     [348822, 333870, 323079, 310862, 342150, 364015, null, null, null, null, null, null], // Jun: 411,014 − iQube 46,999
-    "Bajaj Auto ICE":    [189207, 161925, 175438, 177165, 170386, 123722, null, null, null, null, null, null], // Jun: 166,956 − Chetak 43,234
-    "Suzuki Moto ICE":   [100023, 100798, 107744,  97781, 109755,  91264, null, null, null, null, null, null], // Jun: = domestic (no separate EV line)
-    "Royal Enfield ICE": [ 93781,  91248,  97940, 104129,  94115, 102930, null, null, null, null, null, null], // Jun: = domestic (no EV line)
-    "Yamaha India ICE":  [ 78897,  66969,  65602,   null,    null,  67621, null, null, null, null, null, null] // Jun: = domestic (no EV line)
+    "Hero MotoCorp ICE": [507600, 505008, 530714, 517195, 517717, 481098, 478516, 394989, null, null, null, null], // Jun: 502,890 − Vida 21,792. Jul: 501,403 − Vida 22,887; Aug: 413,996 − Vida 19,007
+    "Honda 2W ICE":      [519202, 512813, 511623, 483623, 459234, 468956, 476436, 447342, null, null, null, null], // Jun: = domestic (Honda EV negligible/untracked). Jul/Aug: = All (same)
+    "TVS Motor ICE":     [348822, 333870, 323079, 310862, 342150, 364015, 381895, 304808, null, null, null, null], // Jun: 411,014 − iQube 46,999. Jul: 437,394 − (iQube+Orbiter) 55,499; Aug: 353,746 − 48,938
+    "Bajaj Auto ICE":    [189207, 161925, 175438, 177165, 170386, 123722, 120134, 116130, null, null, null, null], // Jun: 166,956 − Chetak 43,234. Jul: 165,747 − Chetak 45,613; Aug: 157,149 − Chetak 41,019
+    "Suzuki Moto ICE":   [100023, 100798, 107744,  97781, 109755,  91264, 123216, 104217, null, null, null, null], // Jun: = domestic (no separate EV line). Jul/Aug: = All (same)
+    "Royal Enfield ICE": [ 93781,  91248,  97940, 104129,  94115, 102930, 105317, 94448, null, null, null, null], // Jun: = domestic (no EV line). Jul/Aug: = All (same)
+    "Yamaha India ICE":  [ 78897,  66969,  65602,   null,    null,  67621, 72579, 62375, null, null, null, null] // Jun: = domestic (no EV line). Jul/Aug: = All (same)
   }
 };
 
@@ -507,7 +517,9 @@ const tw2wICESourceNotes = {
     March:    "OEM dispatch minus VAHAN EV retail — Mar 2026",
     April:    "OEM dispatch minus VAHAN EV retail — Apr 2026",
     May:      "OEM dispatch minus VAHAN EV retail — May 2026",
-    June:     "OEM domestic dispatch minus VAHAN EV retail — Jun 2026"
+    June:     "OEM domestic dispatch minus VAHAN EV retail — Jun 2026",
+    July:     "OEM domestic dispatch minus VAHAN EV retail — Jul 2026",
+    August:   "VAHAN retail minus VAHAN EV retail — Aug 2026 (both All and EV drawn from the same Aug retail table for consistency)"
   }
 };
 
@@ -539,12 +551,12 @@ const tw2wEVSales = {
     "Greaves / Ampere": [4800, 4200, 5200, 4500, 4178, 4300, 4600, 4498, 4700, 6500, 5200, 3810]
   },
   2026: {
-    "TVS (iQube+Orbiter)": [34440, 31601, 49304, 37683, 42415, 46999, null, null, null, null, null, null], // Jun: 46,999 VAHAN (e2w segment leader)
-    "Bajaj Chetak":        [25520, 24239, 46246, 32898, 39142, 43234, null, null, null, null, null, null], // Jun: 43,234 VAHAN (+80% YoY)
-    "Ather Energy":        [20786, 19738, 35688, 27024, 28211, 31188, null, null, null, null, null, null], // Jun: 31,188 VAHAN (+95% YoY)
-    "Hero Vida":           [12608, 11960, 21434, 15230, 19067, 21792, null, null, null, null, null, null], // Jun: 21,792 VAHAN (+175% YoY)
-    "Ola Electric":        [ 7221,  3968, 10118, 12171, 15141, 16144, null, null, null, null, null, null], // Jun: 16,144 VAHAN
-    "Greaves / Ampere":    [ 4500,  4478,  7965,  6884,  7703, 10928, null, null, null, null, null, null] // Jun: 10,928 VAHAN (+152% YoY)
+    "TVS (iQube+Orbiter)": [34440, 31601, 49304, 37683, 42415, 46999, 55499, 48938, null, null, null, null], // Jun: 46,999 VAHAN (e2w segment leader). Jul: 55,499 (+135.2% YoY, 27.2% e2w share, new high); Aug: 48,938 (+90.8% YoY), retained #1
+    "Bajaj Chetak":        [25520, 24239, 46246, 32898, 39142, 43234, 45613, 41019, null, null, null, null], // Jun: 43,234 VAHAN (+80% YoY). Jul: 45,613 (+121.9% YoY); Aug: 41,019 (+235% YoY)
+    "Ather Energy":        [20786, 19738, 35688, 27024, 28211, 31188, 31044, 28757, null, null, null, null], // Jun: 31,188 VAHAN (+95% YoY). Jul: 31,044 (+105.6%/+70.2% YoY depending on dispatch/retail source); Aug: 28,757 (+49.7% YoY)
+    "Hero Vida":           [12608, 11960, 21434, 15230, 19067, 21792, 22887, 19007, null, null, null, null], // Jun: 21,792 VAHAN (+175% YoY). Jul: 22,887 (+111% YoY, best-ever month); Aug: 19,007 (+38.0% YoY)
+    "Ola Electric":        [ 7221,  3968, 10118, 12171, 15141, 16144, 14105, 13852, null, null, null, null], // Jun: 16,144 VAHAN. Jul: 14,105 (-24% YoY, only top-10 e2w brand to decline); Aug: 13,852 (-28.8% YoY)
+    "Greaves / Ampere":    [ 4500,  4478,  7965,  6884,  7703, 10928, 10125, 8613, null, null, null, null] // Jun: 10,928 VAHAN (+152% YoY). Jul: 10,125 (+137% YoY); Aug: 8,613 (+88.6% YoY)
   }
 };
 
@@ -583,7 +595,9 @@ const tw2wEVSourceNotes = {
     March:    "VAHAN retail — Autocar India / RushLane Mar 2026",
     April:    "VAHAN retail — Autocar India / RushLane Apr 2026",
     May:      "VAHAN retail — Autocar India / RushLane May 2026",
-    June:     "VAHAN retail — BikeAdvice / AutoPunditz Jun 2026 e2W"
+    June:     "VAHAN retail — BikeAdvice / AutoPunditz Jun 2026 e2W",
+    July:     "VAHAN retail — BikeAdvice / AutoPunditz Jul 2026 e2W report (TVS/Bajaj/Ather/Vida/Ola); Greaves via Entrackr Jul 2026",
+    August:   "VAHAN retail — AutoPunditz / BikeAdvice Aug 2026 e2W report (all 6 brands)"
   }
 };
 
