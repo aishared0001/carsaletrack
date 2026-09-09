@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>India Vehicle Sales Tracker 2026</title>
+    <!-- FIX: Link updated from styles.css to style.css to point to the exact file name -->
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <!-- Updated eyebrow text to reflect the new 4-wheeler segment variations -->
+        <p class="eyebrow">4 Wheelers — All • Commercial Vehicles • 2-Wheelers</p>
+        <h1>India Vehicle Sales Tracker 2026</h1>
+      </div>
+      <div class="status-pill">Updated through June 2026 (latest available data)</div>
+    </header>
+
+    <main>
+      <section class="control-band" aria-label="Filters">
+        <label>
+          <span>Vehicle type</span>
+          <select id="segmentSelect">
+            <!-- Renamed Passenger vehicles and added IC Engine / Electric variants -->
+            <option value="passenger">4 Wheelers — All</option>
+            <option value="pv_ice">4 Wheelers — IC Engine</option>
+            <option value="pv_ev">4 Wheelers — Electric</option>
+            <option value="commercial">Commercial vehicles</option>
+            <option value="tw2w_all">2 Wheelers — All</option>
+            <option value="tw2w_ice">2 Wheelers — IC Engine</option>
+            <option value="tw2w_ev">2 Wheelers — Electric</option>
+          </select>
+        </label>
+        <label>
+          <span>View</span>
+          <select id="viewSelect">
+            <option value="figures">Sales data (figures)</option>
+            <option value="mom">Month-on-month growth (MoM)</option>
+            <option value="yoy">Year-on-year growth (YoY)</option>
+          </select>
+        </label>
+        <label>
+          <span>Year</span>
+          <select id="yearSelect">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">All brands</p>
+              <h2 id="tableTitle">2026 monthly sales table</h2>
+          </div>
+          <div class="table-controls">
+            <input id="searchBox" type="search" placeholder="Search brand">
+            <button id="downloadCsvBtn" type="button">Download CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table aria-labelledby="tableTitle">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="source-band">
+        <h2>Sources and limits</h2>
+        <p>
+          Passenger-vehicle figures are compiled from Times of India, Navbharat Times, and AutoPunditz sales reports. Commercial-vehicle coverage lists prominent India CV makers and uses sourced May 2026 Tata Motors CV data from AutoPunditz; other CV makers remain pending until reliable monthly OEM-wise figures are found. Calendar-year 2024 figures (used to compute 2024 month-on-month and 2025 year-on-year growth) draw on manufacturer monthly releases and VAHAN data for the major brands; long-tail/minor brands for 2024 are estimated from 2025 trends and flagged in code comments.
+        </p>
+        <div class="source-links">
+          <a href="https://timesofindia.indiatimes.com/auto/cars/highest-selling-car-manufacturers-in-january-2026-maruti-hyundai-and-more/articleshow/128190357.cms">January report</a>
+          <a href="https://timesofindia.indiatimes.com/auto/cars/car-sales-report-feb-2026-check-top-3-sellers-how-others-performed/articleshow/128939466.cms">February report</a>
+          <a href="https://navbharattimes.indiatimes.com/auto/car-bikes/top-selling-car-companies-of-march-2026-see-tata-mahindra-hyundai-kia-sales/articleshow/129966337.cms">March report</a>
+          <a href="https://navbharattimes.indiatimes.com/auto/car-bikes/maruti-suzuki-sell-most-cars-in-april-followed-by-tata-mahindra-and-other-comapnies/articleshow/130713329.cms">April report</a>
+          <a href="https://timesofindia.indiatimes.com/auto/cars/may-2026-car-sales-maruti-kia-post-record-sales-tata-evs-shine/articleshow/131442090.cms">May report</a>
+          <a href="https://www.autopunditz.com/post/indian-car-sales-figures-may-2026">AutoPunditz May OEM table</a>
+          <a href="https://www.autopunditz.com/post/tata-motors-commercial-vehicle-sales-grow-17-yoy-in-may-2026-scv-cargo-pickup-segment-leads-the">Tata Motors CV May report</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,264 @@
+:root {
+  --ink: #161a1d;
+  --muted: #64707d;
+  --line: #d9e0e6;
+  --paper: #f7f8f5;
+  --panel: #ffffff;
+  --blue: #145da0;
+  --green: #23745a;
+  --red: #b8403f;
+  --amber: #d79b25;
+  --steel: #eef3f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.topbar {
+  min-height: 220px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 38px clamp(18px, 4vw, 56px);
+  color: white;
+  background:
+    linear-gradient(90deg, rgba(14, 24, 33, 0.9), rgba(14, 24, 33, 0.45)),
+    url("https://images.unsplash.com/photo-1743069624932-1a2c399d4967?auto=format&fit=crop&w=1800&q=80") center 55% / cover;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  margin-top: 8px;
+  font-size: clamp(32px, 5vw, 64px);
+  line-height: 0.96;
+  letter-spacing: 0;
+  max-width: 780px;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+main {
+  padding: 22px clamp(14px, 3vw, 42px) 42px;
+}
+
+.eyebrow {
+  color: inherit;
+  opacity: 0.72;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.status-pill {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 10px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.control-band {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+label span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+select,
+input,
+button {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  padding: 0 12px;
+}
+
+button {
+  width: auto;
+  cursor: pointer;
+  font-weight: 800;
+  color: white;
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.panel,
+.source-band {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.panel {
+  padding: 18px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.up {
+  color: var(--green);
+}
+
+.down {
+  color: var(--red);
+}
+
+.flat {
+  color: var(--muted);
+}
+
+.table-panel {
+  margin-top: 14px;
+}
+
+.table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#searchBox {
+  max-width: 230px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: white;
+}
+
+thead th {
+  color: #42505d;
+  background: #f0f4f7;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+thead th.sortable:hover {
+  background: #e3eaf0;
+  color: var(--ink);
+}
+
+thead th.sortable:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
+  background: #e3eaf0;
+  color: var(--ink);
+}
+
+tbody tr:hover td {
+  background: #fff8e6;
+}
+
+.pending {
+  color: var(--muted);
+}
+
+.source-band {
+  margin-top: 14px;
+  padding: 18px;
+}
+
+.source-band p {
+  margin: 10px 0 14px;
+  color: #394650;
+  line-height: 1.55;
+}
+
+.source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.source-links a {
+  color: var(--blue);
+  font-weight: 800;
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .control-band {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  #searchBox,
+  button {
+    width: 100%;
+  }
+} /* FIX: Cleaned up trailing brackets from file wrapper error */
