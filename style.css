@@ -9,6 +9,11 @@
   --red: #b8403f;
   --amber: #d79b25;
   --steel: #eef3f7;
+  /* Categorical trio, validated for CVD-safety across every pairing (see
+     dataviz skill palette.md — first three slots of the reference order). */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
 }
 
 * {
@@ -180,11 +185,30 @@ td {
   white-space: nowrap;
 }
 
-th:first-child,
-td:first-child {
-  text-align: left;
+.compare-col {
   position: sticky;
   left: 0;
+  background: white;
+  text-align: center;
+  width: 44px;
+}
+
+.compare-col input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.compare-col input[type="checkbox"]:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  text-align: left;
+  position: sticky;
+  left: 44px;
   background: white;
 }
 
@@ -240,6 +264,128 @@ tbody tr:hover td {
 .source-links a {
   color: var(--blue);
   font-weight: 800;
+}
+
+.chart-panel {
+  margin-top: 14px;
+}
+
+.chart-hint {
+  margin: 10px 0 2px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chart-subtitle {
+  margin: 2px 0 0;
+  color: #394650;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.chart-wrap {
+  position: relative;
+  margin-top: 10px;
+}
+
+.chart-wrap:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.chart-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.chart-axis-label {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.chart-line {
+  transition: stroke-width 0.1s ease;
+}
+
+.chart-endlabel {
+  fill: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.chart-crosshair {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  background: #161a1d;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  z-index: 5;
+}
+
+.chart-tooltip .tt-month {
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: #fff;
+}
+
+.chart-tooltip .tt-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-tooltip .tt-key {
+  width: 10px;
+  height: 2px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.chart-tooltip .tt-name {
+  color: #c3c2b7;
+}
+
+.chart-tooltip .tt-value {
+  font-weight: 800;
+  margin-left: auto;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-legend-swatch {
+  width: 16px;
+  height: 2px;
+  display: inline-block;
+  border-radius: 1px;
 }
 
 @media (max-width: 860px) {

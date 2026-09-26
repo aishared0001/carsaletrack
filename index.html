@@ -50,6 +50,22 @@
         </label>
       </section>
 
+      <section class="panel chart-panel">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">Trend</p>
+            <h2>Sales trend</h2>
+          </div>
+        </div>
+        <p class="chart-hint">Tick up to three brands in the table below to compare them here — otherwise this shows the top 3 automatically.</p>
+        <p id="chartSubtitle" class="chart-subtitle"></p>
+        <div class="chart-wrap" id="chartWrap" tabindex="0" aria-label="Interactive sales trend chart; the same data is in the table below">
+          <svg id="trendChart" role="img" aria-label="Sales trend chart" viewBox="0 0 760 220" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="chart-tooltip" id="chartTooltip" hidden></div>
+        </div>
+        <div class="chart-legend" id="chartLegend"></div>
+      </section>
+
       <section class="panel table-panel">
         <div class="panel-title">
           <div>
