@@ -782,6 +782,7 @@ function renderTable() {
   const lastHeader = view === "figures" ? "Total" : view === "mom" ? "Avg MoM" : "Avg YoY";
   tableHead.innerHTML = `
     <tr>
+      <th class="compare-col" scope="col">Compare</th>
       ${headerCell("brand", "Brand")}
       ${months.map((month, index) => headerCell(index, month.slice(0, 3))).join("")}
       ${headerCell("summary", lastHeader)}
@@ -790,13 +791,18 @@ function renderTable() {
 
   const rows = sortRows(buildRows(view, priorYearSales, query));
 
-  tableBody.innerHTML = rows.map((row) => `
+  tableBody.innerHTML = rows.map((row) => {
+    const checked  = compareBrands.has(row.name);
+    const disabled = !checked && compareBrands.size >= MAX_COMPARE;
+    return `
     <tr>
+      <td class="compare-col"><input type="checkbox" class="compare-check" data-brand="${escapeAttr(row.name)}" aria-label="Compare ${escapeAttr(row.name)}"${checked ? " checked" : ""}${disabled ? " disabled" : ""}></td>
       <td>${row.name}</td>
       ${row.cells.map((cell) => `<td class="${cell.cls}">${cell.display}</td>`).join("")}
       <td class="${row.summary.cls}">${row.summary.display}</td>
     </tr>
-  `).join("");
+  `;
+  }).join("");
 }
 
 function downloadCSV() {
@@ -862,15 +868,344 @@ function downloadCSV() {
   URL.revokeObjectURL(url);
 }
 
+// ── Trend chart ─────────────────────────────────────────────────────────────
+// Categorical trio only (var(--series-1/2/3)): the dataviz reference palette
+// validates all-pairs CVD safety for its first three slots in any combination,
+// which lets us cap the chart at 3 series without worrying which 3 the user
+// (or the "top movers" default) actually picks.
+const chartSvg      = document.querySelector("#trendChart");
+const chartLegend   = document.querySelector("#chartLegend");
+const chartTooltip  = document.querySelector("#chartTooltip");
+const chartWrap     = document.querySelector("#chartWrap");
+const chartSubtitle = document.querySelector("#chartSubtitle");
+
+const MAX_COMPARE = 3;
+
+let compareBrands = new Set();
+let chartState = null;
+let focusedMonth = 11;
+
+function escapeAttr(str) {
+  return String(str).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+// Segments carry 7-13 brands but only 3 slots are validated CVD-safe for
+// every pairing (see the dataviz skill's palette.md), so a fixed per-brand
+// color can't be guaranteed collision-free — two brands 3 apart in the
+// natural list would silently share a color. Distinctness among whichever
+// <=3 brands are actually on screen has to win over cross-render stability,
+// so the slot is just the brand's position in the currently displayed list.
+// The tradeoff: removing one shown brand can shift another's color, which
+// is far better than two shown brands becoming indistinguishable.
+function seriesColorForSlot(slotIndex) {
+  return `var(--series-${(slotIndex % MAX_COMPARE) + 1})`;
+}
+
+// Rounds a raw axis span to a "clean" step (1/2/5 × a power of ten) so ticks
+// read as 0 / 500 / 1,000 rather than jagged fractions.
+function niceStep(roughValue) {
+  const safeValue = roughValue || 1;
+  const magnitude = Math.pow(10, Math.floor(Math.log10(safeValue)));
+  const normalized = safeValue / magnitude;
+  const step = normalized < 1.5 ? 1 : normalized < 3 ? 2 : normalized < 7 ? 5 : 10;
+  return step * magnitude;
+}
+
+// The default top-3 is always ranked by sales volume, never by the currently
+// selected view's own metric: ranking MoM/YoY view by its own average growth
+// would let a brand with one or two data points (mostly "Pending" months)
+// outrank the real volume leaders on a noisy single-month swing.
+function getChartBrandNames(volumeRows) {
+  if (compareBrands.size > 0) {
+    // Insertion order — the order the user ticked them in.
+    return Array.from(compareBrands);
+  }
+  return volumeRows
+    .filter((row) => row.summary.sortVal != null)
+    .slice()
+    .sort((a, b) => b.summary.sortVal - a.summary.sortVal)
+    .slice(0, MAX_COMPARE)
+    .map((row) => row.name);
+}
+
+function renderChart() {
+  const view = viewSelect.value;
+  const priorYearSales = getPriorYearSales();
+  const chartRows  = buildRows(view, priorYearSales, "");
+  const volumeRows = view === "figures" ? chartRows : buildRows("figures", priorYearSales, "");
+  const rowsByName = new Map(chartRows.map((row) => [row.name, row]));
+  const brandNames = getChartBrandNames(volumeRows);
+
+  const metricLabel = view === "figures" ? "monthly units" : view === "mom" ? "month-on-month growth" : "year-on-year growth";
+  chartSubtitle.textContent = brandNames.length
+    ? `${compareBrands.size > 0 ? "Comparing" : "Top 3 —"} ${brandNames.join(", ")} (${metricLabel})`
+    : "No brands to chart for this filter.";
+
+  if (!brandNames.length) {
+    chartSvg.innerHTML = "";
+    chartLegend.innerHTML = "";
+    chartState = null;
+    return;
+  }
+
+  const series = brandNames.map((name, index) => ({
+    name,
+    values: rowsByName.has(name) ? rowsByName.get(name).cells.map((cell) => cell.sortVal) : new Array(12).fill(null),
+    color: seriesColorForSlot(index)
+  }));
+
+  const width = 760, height = 220;
+  // marginLeft has room for Indian-grouped 6-7 digit labels (e.g. "2,50,000"),
+  // which run wider than the US grouping the naive gap would assume.
+  // marginRight leaves room for a 2-letter end label (e.g. "HE") past
+  // December's data point without it running off the viewBox edge.
+  const marginLeft = 64, marginRight = 30, marginTop = 14, marginBottom = 26;
+  const plotW = width - marginLeft - marginRight;
+  const plotH = height - marginTop - marginBottom;
+
+  const allValues = series.flatMap((s) => s.values).filter((value) => value != null);
+  let yMin = 0, yMax = 10;
+  if (allValues.length) {
+    const dataMax = Math.max(...allValues, 0);
+    const dataMin = Math.min(...allValues, 0);
+    const step = niceStep(Math.max(Math.abs(dataMax), Math.abs(dataMin)) / 4);
+    yMax = Math.ceil(dataMax / step) * step;
+    yMin = Math.floor(dataMin / step) * step;
+    if (yMax === yMin) yMax = yMin + step;
+  }
+
+  const xScale = (index) => marginLeft + (index / 11) * plotW;
+  const yScale = (value) => marginTop + plotH - ((value - yMin) / (yMax - yMin)) * plotH;
+
+  chartState = { series, xScale, yScale, marginLeft, marginTop, plotW, plotH, width, height };
+
+  let gridSvg = "";
+  const tickCount = 4;
+  for (let tick = 0; tick <= tickCount; tick += 1) {
+    const value = yMin + (tick / tickCount) * (yMax - yMin);
+    const y = yScale(value);
+    const label = view === "figures" ? Math.round(value).toLocaleString("en-IN") : `${value.toFixed(0)}%`;
+    gridSvg += `<line x1="${marginLeft}" y1="${y.toFixed(1)}" x2="${width - marginRight}" y2="${y.toFixed(1)}" class="chart-grid"></line>`;
+    gridSvg += `<text x="${marginLeft - 8}" y="${y.toFixed(1)}" class="chart-axis-label" text-anchor="end" dominant-baseline="middle">${label}</text>`;
+  }
+
+  let xAxisSvg = "";
+  months.forEach((month, index) => {
+    xAxisSvg += `<text x="${xScale(index).toFixed(1)}" y="${height - 8}" class="chart-axis-label" text-anchor="middle">${month.slice(0, 3)}</text>`;
+  });
+
+  let seriesSvg = "";
+  const endPoints = [];
+  series.forEach((s) => {
+    let path = "";
+    let drawing = false;
+    let lastIndex = -1;
+    s.values.forEach((value, index) => {
+      if (value == null) { drawing = false; return; }
+      path += `${drawing ? "L" : "M"}${xScale(index).toFixed(1)},${yScale(value).toFixed(1)} `;
+      drawing = true;
+      lastIndex = index;
+    });
+    if (path) {
+      seriesSvg += `<path d="${path.trim()}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chart-line"></path>`;
+    }
+    if (lastIndex >= 0) {
+      const endX = xScale(lastIndex);
+      const endY = yScale(s.values[lastIndex]);
+      seriesSvg += `<circle cx="${endX.toFixed(1)}" cy="${endY.toFixed(1)}" r="4" fill="${s.color}" stroke="#fcfcfb" stroke-width="2"></circle>`;
+      const brand = activeBrands.find((b) => b.name === s.name);
+      endPoints.push({ x: endX, y: endY, text: brand ? brand.short : s.name.slice(0, 2).toUpperCase() });
+    }
+  });
+
+  // Selective direct labels at the line ends only, nudged apart vertically so
+  // converging lines don't produce stacked, unreadable text.
+  endPoints.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < endPoints.length; i += 1) {
+    if (endPoints[i].y - endPoints[i - 1].y < 12) {
+      endPoints[i].y = endPoints[i - 1].y + 12;
+    }
+  }
+  const labelSvg = endPoints
+    .map((label) => `<text x="${(label.x + 8).toFixed(1)}" y="${label.y.toFixed(1)}" class="chart-endlabel" dominant-baseline="middle">${label.text}</text>`)
+    .join("");
+
+  chartSvg.innerHTML = `${gridSvg}${xAxisSvg}${seriesSvg}${labelSvg}<line class="chart-crosshair" x1="0" y1="${marginTop}" x2="0" y2="${marginTop + plotH}" hidden></line>`;
+
+  chartLegend.innerHTML = series.map((s) => `
+    <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:${s.color}"></span>${s.name}</span>
+  `).join("");
+}
+
+function svgPoint(svg, clientX, clientY) {
+  const point = svg.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  const ctm = svg.getScreenCTM();
+  if (!ctm) return { x: 0, y: 0 };
+  const transformed = point.matrixTransform(ctm.inverse());
+  return { x: transformed.x, y: transformed.y };
+}
+
+function monthIndexFromEvent(event) {
+  if (!chartState) return null;
+  const point = svgPoint(chartSvg, event.clientX, event.clientY);
+  const relative = (point.x - chartState.marginLeft) / chartState.plotW;
+  return Math.min(11, Math.max(0, Math.round(relative * 11)));
+}
+
+function showTooltipAt(monthIndex) {
+  if (!chartState) return;
+  const { series, xScale, marginTop } = chartState;
+  const crosshair = chartSvg.querySelector(".chart-crosshair");
+  const x = xScale(monthIndex);
+  if (crosshair) {
+    crosshair.setAttribute("x1", x.toFixed(1));
+    crosshair.setAttribute("x2", x.toFixed(1));
+    crosshair.removeAttribute("hidden");
+  }
+
+  const rows = series
+    .filter((s) => s.values[monthIndex] != null)
+    .map((s) => {
+      const display = viewSelect.value === "figures" ? formatUnits(s.values[monthIndex]) : formatGrowth(s.values[monthIndex]);
+      const tooltipRow = document.createElement("div");
+      tooltipRow.className = "tt-row";
+      const key = document.createElement("span");
+      key.className = "tt-key";
+      key.style.background = s.color;
+      const name = document.createElement("span");
+      name.className = "tt-name";
+      name.textContent = s.name;
+      const value = document.createElement("span");
+      value.className = "tt-value";
+      value.textContent = display;
+      tooltipRow.append(key, name, value);
+      return tooltipRow;
+    });
+
+  chartTooltip.replaceChildren();
+  const monthHeading = document.createElement("div");
+  monthHeading.className = "tt-month";
+  monthHeading.textContent = `${months[monthIndex]} ${yearSelect.value}`;
+  chartTooltip.appendChild(monthHeading);
+  rows.forEach((row) => chartTooltip.appendChild(row));
+
+  const rect = chartWrap.getBoundingClientRect();
+  const scaleX = rect.width / chartState.width;
+  const scaleY = rect.height / chartState.height;
+  chartTooltip.style.left = `${(x * scaleX).toFixed(1)}px`;
+  chartTooltip.style.top = `${(marginTop * scaleY).toFixed(1)}px`;
+  chartTooltip.hidden = false;
+}
+
+function hideTooltip() {
+  chartTooltip.hidden = true;
+  const crosshair = chartSvg.querySelector(".chart-crosshair");
+  if (crosshair) crosshair.setAttribute("hidden", "");
+}
+
+chartSvg.addEventListener("pointermove", (event) => {
+  const index = monthIndexFromEvent(event);
+  if (index != null) {
+    focusedMonth = index;
+    showTooltipAt(index);
+  }
+});
+chartSvg.addEventListener("pointerleave", hideTooltip);
+
+// Keyboard equivalent of the hover tooltip: Left/Right steps through months
+// with the same readout hover gives a mouse user.
+chartWrap.addEventListener("keydown", (event) => {
+  if (!chartState) return;
+  if (event.key === "ArrowLeft") {
+    focusedMonth = Math.max(0, focusedMonth - 1);
+    showTooltipAt(focusedMonth);
+    event.preventDefault();
+  } else if (event.key === "ArrowRight") {
+    focusedMonth = Math.min(11, focusedMonth + 1);
+    showTooltipAt(focusedMonth);
+    event.preventDefault();
+  }
+});
+chartWrap.addEventListener("blur", hideTooltip);
+
+// ── URL state (shareable deep links) ────────────────────────────────────────
+function updateUrlState() {
+  const params = new URLSearchParams();
+  params.set("segment", segmentSelect.value);
+  params.set("view", viewSelect.value);
+  params.set("year", yearSelect.value);
+
+  const query = searchBox.value.trim();
+  if (query) params.set("q", query);
+
+  if (sortState.column != null) {
+    params.set("sort", String(sortState.column));
+    params.set("dir", sortState.dir);
+  }
+
+  if (compareBrands.size > 0) {
+    params.set("compare", Array.from(compareBrands).join("|"));
+  }
+
+  history.replaceState(null, "", `${location.pathname}?${params.toString()}`);
+}
+
+function restoreFromUrl() {
+  const params = new URLSearchParams(location.search);
+
+  const segment = params.get("segment");
+  if (segment && Object.prototype.hasOwnProperty.call(segments, segment)) {
+    segmentSelect.value = segment;
+  }
+
+  const view = params.get("view");
+  if (view === "figures" || view === "mom" || view === "yoy") {
+    viewSelect.value = view;
+  }
+
+  const year = params.get("year");
+  const validYears = Array.from(yearSelect.options).map((option) => option.value);
+  if (year && validYears.includes(year)) {
+    yearSelect.value = year;
+  }
+
+  const query = params.get("q");
+  if (query) searchBox.value = query;
+
+  const sortCol = params.get("sort");
+  if (sortCol === "brand" || sortCol === "summary") {
+    sortState.column = sortCol;
+    sortState.dir = params.get("dir") === "asc" ? "asc" : "desc";
+  } else if (sortCol != null) {
+    const columnIndex = Number(sortCol);
+    if (Number.isInteger(columnIndex) && columnIndex >= 0 && columnIndex <= 11) {
+      sortState.column = columnIndex;
+      sortState.dir = params.get("dir") === "asc" ? "asc" : "desc";
+    }
+  }
+
+  const compare = params.get("compare");
+  if (compare) {
+    compare.split("|").filter(Boolean).forEach((name) => compareBrands.add(name));
+  }
+}
+
 // ── Segment switch event ───────────────────────────────────────────────────
 segmentSelect.addEventListener("change", () => {
+  compareBrands.clear();
   updateActiveData();
   renderTable();
+  renderChart();
+  updateUrlState();
 });
 
 yearSelect.addEventListener("change", () => {
   updateActiveData();
   renderTable();
+  renderChart();
+  updateUrlState();
 });
 
 function toggleSort(header) {
@@ -885,6 +1220,7 @@ function toggleSort(header) {
     sortState.dir = column === "brand" ? "asc" : "desc";
   }
   renderTable();
+  updateUrlState();
 }
 
 tableHead.addEventListener("click", (event) => {
@@ -902,7 +1238,28 @@ tableHead.addEventListener("keydown", (event) => {
   toggleSort(header);
 });
 
-searchBox.addEventListener("input", renderTable);
+tableBody.addEventListener("change", (event) => {
+  const checkbox = event.target.closest(".compare-check");
+  if (!checkbox) return;
+  const brand = checkbox.dataset.brand;
+  if (checkbox.checked) {
+    if (compareBrands.size >= MAX_COMPARE) {
+      checkbox.checked = false;
+      return;
+    }
+    compareBrands.add(brand);
+  } else {
+    compareBrands.delete(brand);
+  }
+  renderTable();
+  renderChart();
+  updateUrlState();
+});
+
+searchBox.addEventListener("input", () => {
+  renderTable();
+  updateUrlState();
+});
 
 downloadCsvBtn.addEventListener("click", downloadCSV);
 
@@ -910,9 +1267,14 @@ viewSelect.addEventListener("change", () => {
   applyViewConstraints();
   updateActiveData();
   renderTable();
+  renderChart();
+  updateUrlState();
 });
 
 // Initialization
+restoreFromUrl();
 applyViewConstraints();
 updateActiveData();
 renderTable();
+renderChart();
+updateUrlState();
