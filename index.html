@@ -50,11 +50,40 @@
         </label>
       </section>
 
+      <section class="panel cross-search-panel">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">All segments</p>
+            <h2>Search across every vehicle type</h2>
+          </div>
+        </div>
+        <p class="chart-hint">Find a brand across all 7 segments at once — e.g. "Tata" surfaces its 4-wheeler, commercial, and EV lines together. Uses the selected year's figures.</p>
+        <input id="crossSearchBox" type="search" placeholder="Search brand across all segments" class="cross-search-box">
+        <div class="table-wrap" id="crossSearchWrap" hidden>
+          <table aria-label="Cross-segment search results">
+            <thead>
+              <tr>
+                <th scope="col">Segment</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Latest month</th>
+                <th scope="col">Latest units</th>
+                <th scope="col">Year total</th>
+              </tr>
+            </thead>
+            <tbody id="crossSearchBody"></tbody>
+          </table>
+        </div>
+        <p id="crossSearchEmpty" class="chart-hint" hidden>No brands match that search.</p>
+      </section>
+
       <section class="panel chart-panel">
         <div class="panel-title">
           <div>
             <p class="eyebrow">Trend</p>
             <h2>Sales trend</h2>
+          </div>
+          <div class="table-controls">
+            <button id="downloadChartBtn" type="button">Download chart (PNG)</button>
           </div>
         </div>
         <p class="chart-hint">Tick up to three brands in the table below to compare them here — otherwise this shows the top 3 automatically.</p>
@@ -74,6 +103,7 @@
           </div>
           <div class="table-controls">
             <input id="searchBox" type="search" placeholder="Search brand">
+            <button id="printTableBtn" type="button">Print / Save as PDF</button>
             <button id="downloadCsvBtn" type="button">Download CSV</button>
           </div>
         </div>
