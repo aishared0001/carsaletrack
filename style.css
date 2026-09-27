@@ -388,6 +388,26 @@ tbody tr:hover td {
   border-radius: 1px;
 }
 
+.cross-search-panel {
+  margin-top: 14px;
+}
+
+.cross-search-box {
+  margin-top: 10px;
+  max-width: 360px;
+}
+
+/* This table has no leading checkbox column, so it shouldn't inherit the
+   main table's "column 2 is sticky brand name" treatment meant for that
+   layout — Segment and Brand are just its first two left-aligned labels. */
+.cross-search-panel th:first-child,
+.cross-search-panel td:first-child,
+.cross-search-panel th:nth-child(2),
+.cross-search-panel td:nth-child(2) {
+  text-align: left;
+  position: static;
+}
+
 @media (max-width: 860px) {
   .topbar {
     align-items: flex-start;
@@ -404,7 +424,55 @@ tbody tr:hover td {
   }
 
   #searchBox,
+  .cross-search-box,
   button {
     width: 100%;
   }
 } /* FIX: Cleaned up trailing brackets from file wrapper error */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .table-panel,
+  .table-panel * {
+    visibility: visible;
+  }
+
+  .table-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    border: none;
+  }
+
+  .table-panel .table-controls,
+  .compare-col {
+    display: none;
+  }
+
+  /* With the checkbox column removed above, the brand column's sticky
+     left:44px (sized for that now-absent column) would otherwise overlap
+     the following data column instead of sitting flush at the left edge. */
+  th:nth-child(2),
+  td:nth-child(2) {
+    position: static;
+  }
+
+  .table-wrap {
+    overflow: visible;
+    border: none;
+  }
+
+  table {
+    min-width: 0;
+  }
+
+  th,
+  td {
+    white-space: normal;
+  }
+}

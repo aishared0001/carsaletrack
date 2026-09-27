@@ -624,6 +624,7 @@ const tableBody      = document.querySelector("#tableBody");
 const tableTitle     = document.querySelector("#tableTitle");
 const searchBox      = document.querySelector("#searchBox");
 const downloadCsvBtn = document.querySelector("#downloadCsvBtn");
+const printTableBtn  = document.querySelector("#printTableBtn");
 
 function formatUnits(value) {
   return value == null ? "Pending" : value.toLocaleString("en-IN");
@@ -868,6 +869,75 @@ function downloadCSV() {
   URL.revokeObjectURL(url);
 }
 
+// ── Cross-segment search ────────────────────────────────────────────────────
+// Independent of the segment/view selects above: finds a brand name across
+// every segment at once, using the selected year's raw figures (growth-view
+// aggregation across segments with different bases isn't attempted here —
+// this is a "where does this brand appear" lookup, not another growth view).
+const crossSearchBox   = document.querySelector("#crossSearchBox");
+const crossSearchWrap  = document.querySelector("#crossSearchWrap");
+const crossSearchBody  = document.querySelector("#crossSearchBody");
+const crossSearchEmpty = document.querySelector("#crossSearchEmpty");
+
+function segmentLabel(key) {
+  const option = segmentSelect.querySelector(`option[value="${key}"]`);
+  return option ? option.textContent : key;
+}
+
+function renderCrossSearch() {
+  const query = crossSearchBox.value.trim().toLowerCase();
+
+  if (!query) {
+    crossSearchWrap.hidden = true;
+    crossSearchEmpty.hidden = true;
+    crossSearchBody.innerHTML = "";
+    return;
+  }
+
+  const year = yearSelect.value;
+  const rows = [];
+
+  Object.keys(segments).forEach((segmentKey) => {
+    const seg = segments[segmentKey];
+    const yearSales = seg.sales[year] || {};
+    seg.brands
+      .filter((brand) => brand.name.toLowerCase().includes(query))
+      .forEach((brand) => {
+        const values = yearSales[brand.name] || new Array(12).fill(null);
+        let latestIndex = -1;
+        for (let i = 11; i >= 0; i -= 1) {
+          if (values[i] != null) { latestIndex = i; break; }
+        }
+        const total = values.reduce((sum, value) => sum + (value || 0), 0);
+        rows.push({
+          segment: segmentLabel(segmentKey),
+          brand: brand.name,
+          latestMonth: latestIndex >= 0 ? `${months[latestIndex]} ${year}` : "—",
+          latestValue: latestIndex >= 0 ? formatUnits(values[latestIndex]) : "Pending",
+          total: total.toLocaleString("en-IN")
+        });
+      });
+  });
+
+  if (!rows.length) {
+    crossSearchWrap.hidden = true;
+    crossSearchEmpty.hidden = false;
+    return;
+  }
+
+  crossSearchEmpty.hidden = true;
+  crossSearchWrap.hidden = false;
+  crossSearchBody.innerHTML = rows.map((row) => `
+    <tr>
+      <td>${row.segment}</td>
+      <td>${row.brand}</td>
+      <td>${row.latestMonth}</td>
+      <td>${row.latestValue}</td>
+      <td>${row.total}</td>
+    </tr>
+  `).join("");
+}
+
 // ── Trend chart ─────────────────────────────────────────────────────────────
 // Categorical trio only (var(--series-1/2/3)): the dataviz reference palette
 // validates all-pairs CVD safety for its first three slots in any combination,
@@ -878,6 +948,7 @@ const chartLegend   = document.querySelector("#chartLegend");
 const chartTooltip  = document.querySelector("#chartTooltip");
 const chartWrap     = document.querySelector("#chartWrap");
 const chartSubtitle = document.querySelector("#chartSubtitle");
+const downloadChartBtn = document.querySelector("#downloadChartBtn");
 
 const MAX_COMPARE = 3;
 
@@ -1037,6 +1108,77 @@ function renderChart() {
   `).join("");
 }
 
+// A standalone SVG (outside the page) can't resolve var(--series-N) against
+// this page's stylesheet, so the clone gets its own inline copy of those
+// three custom properties before serializing. No external library — the
+// browser's own Image + canvas pipeline rasterizes it.
+function downloadChartPNG() {
+  if (!chartState) return;
+
+  const clone = chartSvg.cloneNode(true);
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  clone.setAttribute("width", chartState.width);
+  clone.setAttribute("height", chartState.height);
+
+  const crosshairClone = clone.querySelector(".chart-crosshair");
+  if (crosshairClone) crosshairClone.setAttribute("hidden", "");
+
+  // A standalone SVG document has no link to style.css, so every ".chart-*"
+  // class the live chart depends on (gridlines, axis/end labels, crosshair)
+  // needs its rule reproduced here with literal hex values — var(--series-N)
+  // still needs the custom property itself, since the stroke/fill attributes
+  // in the markup are literally the string "var(--series-N)". Without this,
+  // only the data lines/dots survive export (they carry inline presentation
+  // attributes already); gridlines vanish and text falls back to browser
+  // default size/color, which is wide enough to clip the y-axis labels again.
+  const styleTag = document.createElementNS("http://www.w3.org/2000/svg", "style");
+  styleTag.textContent = `
+    svg {
+      --series-1: #2a78d6;
+      --series-2: #eb6834;
+      --series-3: #1baf7a;
+      background: #fcfcfb;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    .chart-grid { stroke: #d9e0e6; stroke-width: 1; }
+    .chart-axis-label { fill: #64707d; font-size: 11px; }
+    .chart-endlabel { fill: #161a1d; font-size: 11px; font-weight: 700; }
+    .chart-crosshair { stroke: #64707d; stroke-width: 1; }
+  `;
+  clone.insertBefore(styleTag, clone.firstChild);
+
+  const svgString = new XMLSerializer().serializeToString(clone);
+  const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+  const svgUrl = URL.createObjectURL(svgBlob);
+
+  const image = new Image();
+  image.onload = () => {
+    const scale = 2; // export at 2x for a crisper PNG than the on-screen size
+    const canvas = document.createElement("canvas");
+    canvas.width = chartState.width * scale;
+    canvas.height = chartState.height * scale;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(scale, scale);
+    ctx.drawImage(image, 0, 0);
+    URL.revokeObjectURL(svgUrl);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const pngUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = `India_Vehicle_Sales_Trend_${yearSelect.value}_${segmentSelect.value}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(pngUrl);
+    }, "image/png");
+  };
+  image.src = svgUrl;
+}
+
 function svgPoint(svg, clientX, clientY) {
   const point = svg.createSVGPoint();
   point.x = clientX;
@@ -1140,6 +1282,9 @@ function updateUrlState() {
   const query = searchBox.value.trim();
   if (query) params.set("q", query);
 
+  const crossQuery = crossSearchBox.value.trim();
+  if (crossQuery) params.set("xq", crossQuery);
+
   if (sortState.column != null) {
     params.set("sort", String(sortState.column));
     params.set("dir", sortState.dir);
@@ -1174,6 +1319,9 @@ function restoreFromUrl() {
   const query = params.get("q");
   if (query) searchBox.value = query;
 
+  const crossQuery = params.get("xq");
+  if (crossQuery) crossSearchBox.value = crossQuery;
+
   const sortCol = params.get("sort");
   if (sortCol === "brand" || sortCol === "summary") {
     sortState.column = sortCol;
@@ -1205,6 +1353,7 @@ yearSelect.addEventListener("change", () => {
   updateActiveData();
   renderTable();
   renderChart();
+  renderCrossSearch();
   updateUrlState();
 });
 
@@ -1261,7 +1410,14 @@ searchBox.addEventListener("input", () => {
   updateUrlState();
 });
 
+crossSearchBox.addEventListener("input", () => {
+  renderCrossSearch();
+  updateUrlState();
+});
+
 downloadCsvBtn.addEventListener("click", downloadCSV);
+downloadChartBtn.addEventListener("click", downloadChartPNG);
+printTableBtn.addEventListener("click", () => window.print());
 
 viewSelect.addEventListener("change", () => {
   applyViewConstraints();
@@ -1277,4 +1433,5 @@ applyViewConstraints();
 updateActiveData();
 renderTable();
 renderChart();
+renderCrossSearch();
 updateUrlState();
